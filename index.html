@@ -390,5 +390,30 @@
     canvas.height = window.innerHeight;
   });
 </script>
+  <audio id="sonidoEntrada" autoplay>
+  <source src="Minecraft.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const audio = document.getElementById('sonidoEntrada');
+    
+    // Intenta reproducir (con manejo de errores)
+    const playAudio = () => {
+      audio.volume = 0.5; // Volumen al 50%
+      audio.play().catch(e => {
+        console.log("El navegador bloqueó el auto-play. Haz clic en la página.");
+      });
+    };
+    
+    // Retraso breve para mayor compatibilidad
+    setTimeout(playAudio, 500);
+    
+    // Permite reproducir con cualquier clic en la página
+    document.body.addEventListener('click', () => {
+      playAudio();
+    }, { once: true });
+  });
+</script>
 </body>
 </html>
