@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Acta de Compromiso Maincra</title>
+  <link href="https://fonts.cdnfonts.com/css/minecraft-4" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Minecraft', sans-serif;
+      background: radial-gradient(circle, #fff0f0, #ffeaea);
+      color: #4d2c2c;
+      min-height: 100vh;
+      overflow-x: hidden;
+      padding: 20px;
+      position: relative;
+    }
+    header {
+      text-align: center;
+      padding: 20px;
+      font-size: 30px;
+      background: #ffcccc;
+      color: #7b2e2e;
+      border-radius: 15px;
+      margin-bottom: 30px;
+      box-shadow: 0 0 20px rgba(255, 170, 170, 0.8);
+    }
+    .acta {
+      background: #fffafa;
+      border-radius: 20px;
+      padding: 25px;
+      max-width: 700px;
+      margin: auto;
+      box-shadow: 0 0 30px rgba(255, 192, 203, 0.6);
+      border: 5px double #c97a7a;
+      position: relative;
+    }
+    .acta h2 {
+      text-align: center;
+      font-size: 26px;
+      color: #a94442;
+      margin-bottom: 20px;
+    }
+    .acta p {
+      font-size: 18px;
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+    .firma {
+      margin-top: 30px;
+      text-align: center;
+    }
+    .firma button {
+      background: #ff6666;
+      color: white;
+      font-family: 'Minecraft';
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #ff9999;
+      margin: 5px;
+      display: block;
+      width: 100%;
+      max-width: 200px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .firma button:hover {
+      background: #e63946;
+    }
+    #mensajeFinal {
+      display: none;
+      margin-top: 15px;
+      color: #388e3c;
+      font-size: 20px;
+    }
+    canvas.corazones {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 10;
+    }
+    #noBtn {
+      background: #c97a7a;
+      color: white;
+      font-family: 'Minecraft';
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #fbb;
+      margin-top: 10px;
+      transition: all 0.3s ease;
+      display: block;
+      width: 100%;
+      max-width: 200px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    /* Estilos para los ositos */
+    .osito {
+      position: fixed;
+      width: 40px;
+      height: 40px;
+      z-index: 5;
+      pointer-events: none;
+      user-select: none;
+    }
+    
+    .diamante {
+      position: fixed;
+      font-size: 20px;
+      z-index: 6;
+      pointer-events: none;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+<canvas class="corazones"></canvas>
+
+<!-- Ositos -->
+<img src="https://media1.tenor.com/m/yRme1SQkmCAAAAAd/milk-and-mocha-bear-rain.gif" class="osito" id="ositoNormal">
+<img src="https://media1.tenor.com/m/CaDHP6_2uS8AAAAd/nubeo-beonu.gif" class="osito" id="ositoMoño">
+
+<header>💖 Acta de Compromiso Maincra 💖</header>
+
+<section class="acta">
+  <h2>Alexa Margarita 💍 Carlos Guillermo</h2>
+  <p>Querida Maggi,</p>
+  <p>Hoy fue un dia importante, muy MAGGIco ✨</p>
+  <p>Aunque no jugamos Minecraft, espero que humildemente aceptes la propuesta de jugar conmigo:</p>
+  <p><strong>"Aqui no hay quien viva Pt.2"</strong>, pero esta vez tu siendo la pobre 💩 (con mods, pero sin que explote tu cel JSJA).</p>
+  <p>Usted Alexita preciosa Margarita esta comprometiendose a jugar conmigo Minecraft el dia <strong>martes 8 de julio de 2025</strong> hasta que los 2 nos 💀</p>
+  <p>Y yo Carlos Guillermo me comprometo a jugar con la niña más bonita del mundo💗 y de la galaxia, incluso si ya no quieres ser mi amiguita....</p>
+  <p><strong>Morra qlera, hay q jugaar😠😠😠</strong></p>
+  <div class="firma">
+    <button onclick="aceptarCompromiso()">Firma Shrek Firma 👻</button>
+    <button id="noBtn">No 🙂‍↔️</button>
+    <p id="mensajeFinal">Usted Alexa Margarita esta comprometida con Carlos a jugar de por vida con el a Maincra ✨</p>
+  </div>
+</section>
+
+<script>
+  const frases = [
+    "¿Ahhh segura?? 😡",
+    "Eso es lo que quieres Alexa...",
+    "Mmm 😡😡🖕🖕🖕",
+    " Ahora vas a tener que firmar ahuevo😡"
+  ];
+  let clicks = 0;
+  const noBtn = document.getElementById("noBtn");
+
+  noBtn.addEventListener("click", () => {
+    if (clicks < 3) {
+      noBtn.textContent = frases[clicks];
+      // Mover a posición aleatoria dentro del contenedor .acta
+      const actaRect = document.querySelector('.acta').getBoundingClientRect();
+      const maxX = actaRect.width - noBtn.offsetWidth - 40;
+      const maxY = actaRect.height - noBtn.offsetHeight - 40;
+      
+      noBtn.style.position = 'absolute';
+      noBtn.style.left = Math.random() * maxX + 'px';
+      noBtn.style.top = Math.random() * maxY + 'px';
+      
+      if (navigator.vibrate) navigator.vibrate([100, 50]);
+      clicks++;
+    } else {
+      // En el cuarto click
+      noBtn.textContent = frases[3];
+      noBtn.style.backgroundColor = '#ff0000';
+      noBtn.style.transform = 'scale(1.2)';
+      
+      // Efecto de explosión
+      setTimeout(() => {
+        noBtn.style.transition = 'all 0.5s ease';
+        noBtn.style.transform = 'scale(0) rotate(360deg)';
+        noBtn.style.opacity = '0';
+        
+        // Desaparecer después de la animación
+        setTimeout(() => {
+          noBtn.style.display = 'none';
+        }, 500);
+      }, 1000);
+    }
+  });
+
+  function aceptarCompromiso() {
+    document.getElementById("mensajeFinal").style.display = "block";
+    if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+    lanzarCorazonesFirma();
+  }
+
+  // Animación extra al aceptar
+  function lanzarCorazonesFirma() {
+    for (let i = 0; i < 30; i++) {
+      const corazon = document.createElement("div");
+      corazon.textContent = "💖";
+      corazon.style.position = "absolute";
+      corazon.style.left = Math.random() * window.innerWidth + "px";
+      corazon.style.top = Math.random() * window.innerHeight + "px";
+      corazon.style.fontSize = (Math.random() * 30 + 20) + "px";
+      corazon.style.opacity = "1";
+      corazon.style.transition = "transform 2s ease, opacity 2s ease";
+      corazon.style.zIndex = "999";
+      document.body.appendChild(corazon);
+
+      setTimeout(() => {
+        corazon.style.transform = `translateY(-100px) scale(1.2)`;
+        corazon.style.opacity = "0";
+      }, 100);
+
+      setTimeout(() => {
+        document.body.removeChild(corazon);
+      }, 2000);
+    }
+  }
+
+  // EFECTO CORAZONES EN TODA LA PÁGINA
+  const canvas = document.querySelector(".corazones");
+  const ctx = canvas.getContext("2d");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const corazones = [];
+  function crearCorazon() {
+    corazones.push({
+      x: Math.random() * canvas.width,
+      y: canvas.height + 20,
+      size: Math.random() * 20 + 10,
+      speed: Math.random() * 2 + 1,
+      opacity: Math.random() * 0.5 + 0.5
+    });
+  }
+
+  function animar() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    corazones.forEach((c, i) => {
+      ctx.fillStyle = `rgba(255,105,180,${c.opacity})`;
+      ctx.beginPath();
+      ctx.moveTo(c.x, c.y);
+      ctx.bezierCurveTo(c.x + c.size / 2, c.y - c.size,
+                        c.x + c.size, c.y + c.size / 3,
+                        c.x, c.y + c.size);
+      ctx.bezierCurveTo(c.x - c.size, c.y + c.size / 3,
+                        c.x - c.size / 2, c.y - c.size,
+                        c.x, c.y);
+      ctx.fill();
+      c.y -= c.speed;
+      if (c.y < -30) corazones.splice(i, 1);
+    });
+    requestAnimationFrame(animar);
+  }
+
+  setInterval(crearCorazon, 190);
+  animar();
+
+  // ANIMACIÓN DE OSITOS QUE LANZAN DIAMANTES
+  const ositoNormal = document.getElementById('ositoNormal');
+  const ositoMoño = document.getElementById('ositoMoño');
+  const diamantes = [];
+  
+  // Configuración de movimiento para los ositos
+  const ositos = [
+    {
+      element: ositoNormal,
+      x: 0,
+      y: Math.random() * window.innerHeight,
+      speedX: 2,
+      speedY: 0,
+      direction: 1 // 1 para derecha, -1 para izquierda
+    },
+    {
+      element: ositoMoño,
+      x: Math.random() * window.innerWidth,
+      y: 0,
+      speedX: 0,
+      speedY: 1.5,
+      direction: 1 // 1 para abajo, -1 para arriba
+    }
+  ];
+  
+  // Mover ositos
+  function moverOsitos() {
+    ositos.forEach(osito => {
+      // Actualizar posición
+      osito.x += osito.speedX * osito.direction;
+      osito.y += osito.speedY * osito.direction;
+      
+      // Verificar bordes y cambiar dirección si es necesario
+      if (osito.speedX !== 0) { // Movimiento horizontal
+        if (osito.x > window.innerWidth - 40) {
+          osito.direction = -1;
+          if (Math.random() < 0.3) lanzarDiamante(osito.x, osito.y, 'normal');
+        } else if (osito.x < 0) {
+          osito.direction = 1;
+          if (Math.random() < 0.3) lanzarDiamante(osito.x, osito.y, 'normal');
+        }
+      } else { // Movimiento vertical
+        if (osito.y > window.innerHeight - 40) {
+          osito.direction = -1;
+          if (Math.random() < 0.3) lanzarDiamante(osito.x, osito.y, 'moño');
+        } else if (osito.y < 0) {
+          osito.direction = 1;
+          if (Math.random() < 0.3) lanzarDiamante(osito.x, osito.y, 'moño');
+        }
+      }
+      
+      // Aplicar posición
+      osito.element.style.left = osito.x + 'px';
+      osito.element.style.top = osito.y + 'px';
+    });
+    
+    // Mover diamantes
+    diamantes.forEach((d, index) => {
+      d.x += d.vx;
+      d.y += d.vy;
+      d.element.style.left = d.x + 'px';
+      d.element.style.top = d.y + 'px';
+      d.opacity -= 0.005;
+      d.element.style.opacity = d.opacity;
+      
+      // Eliminar diamantes que están fuera de la pantalla o muy transparentes
+      if (d.opacity <= 0 || 
+          d.x < -50 || d.x > window.innerWidth + 50 || 
+          d.y < -50 || d.y > window.innerHeight + 50) {
+        d.element.remove();
+        diamantes.splice(index, 1);
+      }
+    });
+    
+    requestAnimationFrame(moverOsitos);
+  }
+  
+  // Función para lanzar diamantes
+  function lanzarDiamante(x, y, tipo) {
+    const diamante = document.createElement('div');
+    diamante.className = 'diamante';
+    diamante.textContent = '💎';
+    
+    // Estilo diferente según qué osito lo lanza
+    if (tipo === 'normal') {
+      diamante.style.color = '#55ddff'; // Azul claro
+    } else {
+      diamante.style.color = '#ff77aa'; // Rosa
+    }
+    
+    diamante.style.left = x + 'px';
+    diamante.style.top = y + 'px';
+    document.body.appendChild(diamante);
+    
+    // Dirección hacia el centro
+    const centroX = window.innerWidth / 2;
+    const centroY = window.innerHeight / 2;
+    const angulo = Math.atan2(centroY - y, centroX - x);
+    const velocidad = 2 + Math.random() * 2;
+    
+    diamantes.push({
+      element: diamante,
+      x: x,
+      y: y,
+      vx: Math.cos(angulo) * velocidad,
+      vy: Math.sin(angulo) * velocidad,
+      opacity: 1
+    });
+  }
+  
+  // Iniciar animación de ositos
+  window.addEventListener('load', () => {
+    // Posiciones iniciales aleatorias pero dentro de la pantalla
+    ositos[0].y = Math.random() * (window.innerHeight - 40);
+    ositos[1].x = Math.random() * (window.innerWidth - 40);
+    
+    moverOsitos();
+  });
+  
+  // Redimensionar
+  window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  });
+</script>
+</body>
+</html>
